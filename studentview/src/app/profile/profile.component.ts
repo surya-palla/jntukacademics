@@ -21,7 +21,6 @@ export class ProfileComponent {
 	) {}
 	profile_image_base_url = this.bk._baseURL.replace('api', '');
 	profile_image_path: String = '';
-
 	user_data: any = null;
 	loading: boolean = false;
 	image: any = null;
@@ -42,17 +41,14 @@ export class ProfileComponent {
 			this.router.navigateByUrl('/login');
 		}
 		this.user_data = JSON.parse(this.user_data);
-		console.log(this.user_data);
 		this.profile_image_path =
 			this.profile_image_base_url + this.user_data.picture;
 	}
 
 	updateProfile(params: any) {
 		if (params.name) {
-			let name: [string] = params.name.split(' ');
-			params.first_name = name.join(' ');
-			params.last_name = name[name.length - 1];
-			name.pop();
+			params.first_name = params.first_name;
+			params.last_name = params.last_name;
 		}
 		params.roll = this.user_data.roll;
 		params.picture = this.user_data.picture;
@@ -61,8 +57,8 @@ export class ProfileComponent {
 			localStorage.setItem('user_data', JSON.stringify(data));
 			this.user_data = data;
 			console.log(data);
+			location.reload();
 		});
-		// window.location.reload();
 	}
 
 	updatePasswd(params: any) {
@@ -86,27 +82,37 @@ export class ProfileComponent {
 		});
 	}
 
-	uploadFile() {
-		this.loading = true;
-		this.formData.append('file', this.image);
-		this.bk
-			.upload('/upload/profile-picture', this.formData)
-			.subscribe((event: any) => {
-				console.log(event);
-				if (event.body) {
-					console.log(event.body.path);
+	uploadFile(fileInput: HTMLInputElement) {
+		if (
+			fileInput.files &&
+			fileInput.files.length > 0 &&
+			this.image != null
+		) {
+			console.log('File is selected');
+			this.loading = true;
+			this.formData.append('file', this.image);
+			this.bk
+				.upload('/upload/profile-picture', this.formData)
+				.subscribe((event: any) => {
+					if (event.body) {
+						console.log(event.body.path);
 
-					this.user_data.picture = event.body.path;
-					localStorage.setItem(
-						'user_data',
-						JSON.stringify(this.user_data)
-					);
-					console.log('localStorage after uploading the picture');
-					console.log(localStorage.getItem('user_data'));
-					console.log(event.body);
-					this.loading = false;
-				}
-			});
+						this.user_data.picture = event.body.path;
+						localStorage.setItem(
+							'user_data',
+							JSON.stringify(this.user_data)
+						);
+						console.log('localStorage after uploading the picture');
+						console.log(localStorage.getItem('user_data'));
+						console.log(event.body);
+						this.loading = false;
+						alert('Profile picture updated');
+						location.reload();
+					}
+				});
+		} else {
+			alert('File is not selected');
+		}
 	}
 
 	formData: FormData = new FormData();
@@ -116,5 +122,9 @@ export class ProfileComponent {
 		// this.formData.append('file_to_upload', fileToUpload);
 		this.image = event.target.files[0];
 		this.formData.append('roll', localStorage.getItem('roll') || '');
+	}
+
+	deleteFile(fileInput: HTMLInputElement) {
+		fileInput.value = '';
 	}
 }

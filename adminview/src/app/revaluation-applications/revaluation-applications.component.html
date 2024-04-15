@@ -43,18 +43,7 @@
 						<td scope="col">{{ year_map(app.year) }}</td>
 						<td scope="col">{{ semester_map(app.semester) }}</td>
 						<td scope="col">{{ app.DU_number }}</td>
-						<td>
-							<select
-								name="subjects"
-								id="subjects"
-								class="form-select"
-							>
-								<option value="">Subjects</option>
-								<option *ngFor="let sub of app.subjects">
-									{{ sub }}
-								</option>
-							</select>
-						</td>
+						<td scope="col">{{ app.subjects }}</td>
 						<td class="col">
 							<button
 								class="btn btn-warning"
@@ -76,9 +65,7 @@
 						<td scope="col">
 							<button
 								class="btn btn-danger"
-								(click)="
-									approveApplication(app.roll, app.DU_number)
-								"
+								(click)="deleteApplication(app._id)"
 							>
 								Reject
 							</button>

@@ -37,6 +37,7 @@ export class SidebarComponent {
 
 	goToDeleteNotifications() {
 		this.router.navigateByUrl('/admin/delete-notifications');
+		// console.log('Hello');
 	}
 
 	goToUpdateRegulation() {

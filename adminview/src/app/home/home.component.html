@@ -172,7 +172,15 @@
 										alt=""
 									/>
 									<h4>{{ notification.date_of_update }}</h4>
-									<p>{{ notification.data }}</p>
+									<p>
+										{{ notification.data }}
+										<a
+											href="{{ notification.file }}"
+											target="_blank"
+											style="text-decoration: underline"
+											>file</a
+										>
+									</p>
 								</div>
 							</div>
 							<!-- End sidebar recent posts-->

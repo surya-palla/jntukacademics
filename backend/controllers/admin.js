@@ -244,6 +244,22 @@ export default function AdminController() {
         return { errno: 404, ...e };
       }
     },
+
+    deleteRevaluationCertificate: async function ({ id }) {
+      try {
+        const savedApplication = await revalutionApplication.findOne({
+          _id: id,
+        });
+        if (savedApplication != null) {
+          await revalutionApplication.deleteOne({ _id: id });
+          return savedApplication;
+        } else {
+          return { errno: 404, ...e };
+        }
+      } catch (e) {
+        return { errno: 404, ...e };
+      }
+    },
     getCertificates: async function ({ approved }) {
       try {
         const results = await certificateApplication.find({

@@ -77,6 +77,12 @@ app.route("/approve-revaluation-application").post(async (req, res) => {
     .json(await adminController.approveRevaluationCertificate(req.body));
 });
 
+app.route("/delete-revaluation-application").post(async (req, res) => {
+  res
+    .status(200)
+    .json(await adminController.deleteRevaluationCertificate(req.body));
+});
+
 app.route("/send-result").post(async (req, res) => {
   res.status(200).json(await adminController.sendResult(req.body));
 });

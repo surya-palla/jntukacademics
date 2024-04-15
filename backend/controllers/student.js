@@ -299,9 +299,9 @@ export default function StudentController() {
     getHallticket: async function ({ roll_no }) {
       try {
         console.log(roll_no);
-        const result = await hallticket.findOne({ roll_no: roll_no });
+        const result = await hallticket.find({ roll_no: roll_no });
         console.log(result);
-        return [result];
+        return result;
       } catch (e) {
         return { errno: 404, ...e };
       }
