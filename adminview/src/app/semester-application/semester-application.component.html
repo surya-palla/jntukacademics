@@ -45,12 +45,13 @@
 						<td scope="col">{{ semester_map(app.semester) }}</td>
 						<td scope="col">{{ app.challana }}</td>
 						<td class="col">
-							<button
+							<a
+								target="_blank"
 								class="btn btn-warning"
-								(click)="view(app.receipt)"
+								href="{{ app.receipt }}"
 							>
 								View
-							</button>
+							</a>
 						</td>
 						<td scope="col">
 							<button
