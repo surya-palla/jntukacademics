@@ -11,7 +11,8 @@
 			<div class="form-floating container mt-3">
 				<select
 					class="form-select"
-					ngModel=""
+					[(ngModel)]="selectedYear"
+					(change)="onYearChange()"
 					name="year"
 					id="year"
 					aria-label="Floating label select example"
@@ -24,6 +25,25 @@
 				</select>
 				<label for="floatingSelect" class="mx-3"
 					>Choose your year</label
+				>
+			</div>
+			<div class="form-floating container mt-3">
+				<select
+					class="form-select"
+					[(ngModel)]="selectedCourseCode"
+					name="courseCode"
+					id="courseCode"
+					aria-label="Floating label select example"
+				>
+					<option
+						*ngFor="let course of courseCodes"
+						[value]="course.course_code"
+					>
+						{{ course.course_code }}
+					</option>
+				</select>
+				<label for="courseCode" class="mx-3"
+					>Choose your course code</label
 				>
 			</div>
 			<div class="d-grid gap-2 col-6 mx-auto my-3">

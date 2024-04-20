@@ -399,12 +399,14 @@ export default function AdminController() {
       const record = await attendance.findOne({
         roll: data.roll,
         year: data.year,
+        course_code: data.course_code,
       });
 
       if (record == undefined) {
         const item = new attendance({
           year: data.year,
           roll: data.roll,
+          course_code: data.course_code,
           attendance: data.attendance,
         });
         await item.save();
@@ -431,7 +433,6 @@ export default function AdminController() {
       } catch (e) {
         return { errno: 501, ...e };
       }
-      console.log(record);
       return true;
     },
   };

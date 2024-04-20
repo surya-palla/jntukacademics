@@ -335,12 +335,23 @@ export default function StudentController() {
       }
     },
 
-    getAttendance: async function ({ year, roll }) {
+    getAttendance: async function ({ year, roll, courseCode }) {
+      console.log(courseCode);
       const userAttendance = await attendance.findOne({
         roll: roll,
         year: year,
+        course_code: courseCode,
       });
       return userAttendance;
+    },
+    getCourseIds: async function ({ year, roll }) {
+      console.log(year);
+      const ids = await attendance.find(
+        { roll: roll, year: year },
+        "course_code"
+      );
+      // const ids = [];
+      return ids;
     },
   };
 }

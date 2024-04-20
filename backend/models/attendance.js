@@ -16,6 +16,10 @@ const attendanceSchema = new mongoose.Schema({
     required: true,
     enum: [1, 2, 3, 4],
   },
+  course_code: {
+    type: String,
+    required: true,
+  },
   attendance: [
     {
       month: {

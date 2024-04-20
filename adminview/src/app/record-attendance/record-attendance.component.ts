@@ -37,6 +37,7 @@ export class RecordAttendanceComponent {
 	}
 
 	year: String = '';
+	course_code = '';
 	roll_number: String = '';
 	attendance: any = [];
 
@@ -74,9 +75,11 @@ export class RecordAttendanceComponent {
 		let pdata: Record<string, any> = {
 			roll: formData.roll_number,
 			year: formData.year,
+			course_code: formData.course_code,
 		};
 		delete formData.roll;
 		delete formData.year;
+		delete formData.course_code;
 
 		let attendance: any[] = [];
 		for (let i = 0; i < this.rows.length; i++) {

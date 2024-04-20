@@ -59,5 +59,9 @@ app.route("/getAttendance").post(async (req, res) => {
   res.status(200).json(await studentController.getAttendance(req.body));
 });
 
+app.route("/getCourseIds").post(async (req, res) => {
+  res.status(200).json(await studentController.getCourseIds(req.body));
+});
+
 const student = app;
 export default student;

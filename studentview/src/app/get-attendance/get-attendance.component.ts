@@ -13,8 +13,11 @@ export class GetAttendanceComponent {
 	result: any = {};
 	user_data: any = {};
 	ryear = 0;
+	selectedYear: number = 0;
+	selectedCourseCode: string = '';
 	rsem = 0;
 	regulation = '';
+	courseCodes: any[] = [];
 	gradeMap: any = {
 		10: 'O',
 		9: 'S',
@@ -37,17 +40,42 @@ export class GetAttendanceComponent {
 	ngOnInit(): void {
 		this.ryear = 0;
 		this.rsem = 0;
+		// console.log('On init');
 		this.user_data = localStorage.getItem('user_data');
 		if (!this.user_data) {
 			this.router.navigateByUrl('/login');
 			return;
 		}
 		this.user_data = JSON.parse(this.user_data);
+		var roll = this.user_data.roll;
+		var params = {
+			roll: '',
+		};
+		params.roll = roll;
+
 		this.regulation = this.user_data.regulation;
 	}
 
+	onYearChange() {
+		var roll = this.user_data.roll;
+		var year = this.selectedYear;
+		// console.log(year);
+		if (this.selectedYear !== 0) {
+			this.getCourseCodes({ year, roll });
+		} else {
+			this.courseCodes = []; // Clear course codes if year is not selected
+		}
+	}
+	getCourseCodes(params: any) {
+		// Make HTTP request to fetch course codes based on year
+		// console.log(params);
+		this.bk.post('/student/getCourseIds', params).subscribe((data) => {
+			// console.log(data);
+			this.courseCodes = data;
+		});
+	}
 	getResult(params: any) {
-		console.log(params);
+		// console.log(params);
 		params.roll = this.user_data.roll;
 		params.regulation_ = this.user_data.regulation;
 		// return
@@ -68,7 +96,7 @@ export class GetAttendanceComponent {
 
 				this.result.subjects.push(result_item);
 			}
-			console.log(return_data.length);
+			// console.log(return_data.length);
 		});
 	}
 
@@ -90,11 +118,12 @@ export class GetAttendanceComponent {
 		this.ryear = params.year;
 		this.rsem = 2;
 		params.roll = this.user_data.roll;
+		// console.log(params);
 		this.bk.post('/student/getAttendance', params).subscribe((data) => {
 			this.result.subjects = new Array();
 			if (data != null) {
 				var return_data = data.attendance;
-
+				// console.log(data);
 				for (var i = 0; i < return_data.length; i++) {
 					var result_item = {
 						month: monthsData[return_data[i].month - 1],
