@@ -65,19 +65,6 @@ export class UploadResultsComponent {
 			regulation: formData.regulation_,
 			result_type: 'REG',
 		};
-		delete formData.roll;
-		delete formData.year;
-		delete formData.semester;
-		delete formData.regulation_;
-		// let subjects: Record<string, any> = {}
-		// for (const [k, v] of Object.entries(formData)) {
-		// 	if (v == "") {
-		// 		continue
-		// 	}
-		// 	subjects[k] = v
-		// }
-		// pdata['subjects'] = subjects
-		//need to make array or object of subjects
 
 		let subjects: any[] = [];
 		for (let i = 0; i < this.rows.length; i++) {

@@ -143,8 +143,9 @@ export default function AdminController() {
     },
     uploadSupplyResult: async function ({ roll, semester, year, subjects }) {
       let sub = {};
-      for (const [k, v] of Object.entries(subjects)) {
-        sub[k] = +v;
+      // console.log(subjects);
+      for (var i in subjects) {
+        sub[subjects[i].courseCode] = subjects[i];
       }
       try {
         const examRes = await examResult.findOne({
@@ -152,6 +153,48 @@ export default function AdminController() {
           semester: semester,
           year: year,
         });
+        if (examRes == null) {
+          return {
+            errno: 404,
+            message:
+              "User results not found for Semester: " +
+              semester +
+              " and year: " +
+              year +
+              " in regular results data",
+          };
+        }
+        const savedResults = examRes.subjects;
+
+        for (const index in savedResults) {
+          var course_code = savedResults[index].courseCode;
+          if (course_code in sub) {
+            if (
+              sub[course_code].courseTitle != savedResults[index].courseTitle
+            ) {
+              return {
+                errno: 404,
+                message:
+                  "The courseTitle in database (" +
+                  savedResults[index].courseTitle +
+                  ") is not matching with courseTitle you sent (" +
+                  sub[course_code].courseTitle +
+                  ") for courseCode: " +
+                  course_code,
+              };
+            }
+            continue;
+          }
+          sub[savedResults[index].courseCode] = savedResults[index];
+        }
+
+        var finalSubjects = new Array();
+
+        for (const item in sub) {
+          finalSubjects.push(sub[item]);
+        }
+        // console.log(finalSubjects);
+
         const result = await examResult.findOneAndUpdate(
           {
             roll: roll,
@@ -160,10 +203,7 @@ export default function AdminController() {
           },
           {
             $set: {
-              subjects: {
-                ...examRes.subjects,
-                ...sub,
-              },
+              subjects: finalSubjects,
             },
           }
         );
